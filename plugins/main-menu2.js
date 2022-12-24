@@ -1,0 +1,31 @@
+const fs = require('fs')
+const fetch = require('node-fetch')
+let handler = async(m, { conn, text, usedPrefix, command }) => {
+let tag = `https://wa.me/6285756507257`
+  let mentionedJid = [m.sender]
+let pp = await conn.profilePictureUrl(m.chat).catch(_ => null)
+let suka = `Saya Zyyラ`
+global.fkontak = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `status@broadcast` } : {}) }, message: { 'contactMessage': { 'displayName': suka, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${suka},;;;\nFN:${suka},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabell:Ponsel\nEND:VCARD`, 'jpegThumbnail': fs.readFileSync('./thumbnail.jpg'), thumbnail: fs.readFileSync('./thumbnail.jpg'),sendEphemeral: true}}}
+
+let str = `*Hi!, I'm ZyyBotzzラ*`
+let isi =`「 ID 」Zyyラ adalah bot WhatsApp yang dibuat menggunakan Linux maupun Platform lainnya.\n「 En 」Zyyラ is a WhatsApp bot built using Linux or other Platforms.\n─────────────────❏\n「 ID 」Jika mengalami kesulitan dalam menggunakan bot atau error dalam fitur bot,silahkan chat owner dengan link yang disediakan dibawah.\n「 EN 」If you experience difficulties using the bot or an error in the bot feature, please chat with the owner using the link provided below.\n${tag} (Owner)`
+let wibu = `https://api-reysekha.herokuapp.com/api/random/cosplay?apikey=apirey` 
+let thumb = await(await fetch(wibu)).buffer()
+conn.send3ButtonImg(m.chat, `https://telegra.ph/file/1b1c27a5b3e508b2964ce.jpg`, str, isi, 'Menu', '.zyybotzz', 'Owner', '.owner', 'Credit', '.credit', m, { contextInfo: { externalAdReply: { showAdAttribution: true,
+    mediaUrl: 'https://telegra.ph/file/1b1c27a5b3e508b2964ce.jpg',
+    mediaType: 2, 
+    description: urlnya,
+    title: "Follow my Github!!",
+    body: wm,
+    thumbnail: thumb,
+    sourceUrl: 'https://github.com/6285756507257'
+     }}
+  })
+          }
+handler.help = ['menu']
+handler.tags = ['main']
+handler.command =  /^(menu)$/i
+
+handler.register = false
+
+module.exports = handler

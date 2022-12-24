@@ -1,0 +1,116 @@
+const { createHash } = require ('crypto')
+const fetch = require ('node-fetch')
+let Reg = /\|?(.*)([.|] *?)([0-9]*)$/i
+
+let handler = async function (m, { text, usedPrefix, command }) {
+	function pickRandom(list) {
+  return list[Math.floor(Math.random() * list.length)]
+}
+	let zyy = conn.getName(m.sender)
+	const sections = [
+	{
+	title: "𝖲𝖤𝖫𝖤𝖢𝖳 𝖸𝖮𝖴𝖱 𝖠𝖦𝖤 𝖧𝖤𝖱𝖤!",
+	rows: [
+	    {title: "𝖱𝖺𝗇𝖽𝗈𝗆 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.' + pickRandom(['30','29','28','27','26','25','24','23','22','21','20','19','18','17','16','15','14','13','12','11','10','9'])}
+	]
+    },
+    {
+	title: "𝗢 𝗟 𝗗",
+	rows: [
+	    {title: "30 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.30 '},
+	    {title: "29 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.29 '},
+	    {title: "28 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.28 '},
+	{title: "27 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.27 '},
+	{title: "26 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.26 '},
+	{title: "25 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.25 '},
+	{title: "24 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.24 '},
+	{title: "23 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.23 '},
+	{title: "22 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.22 '},
+	{title: "21 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.21 '}
+	]
+    },
+    {
+	title: "𝗬 𝗢 𝗨 𝗡 𝗚",
+	rows: [
+	    {title: "20 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.20 '},
+	    {title: "19 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.19 '},
+	    {title: "18 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.18 '},
+	{title: "17 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.17 '},
+	{title: "16 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.16 '},
+	{title: "15 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.15 '},
+	{title: "14 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.14 '},
+	{title: "13 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.13 '},
+	{title: "12 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.12 '},
+	{title: "11 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.11 '},
+	{title: "10 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.10 '},
+	{title: "9 𝖸𝖾𝖺𝗋𝗌", rowId: '.daftar ' + zyy + '.9 '}
+	]
+    },
+]
+
+const listMessage = {
+  text: `│›Please select your age at the bottom button...`,
+  footer: `┗ *𝖸𝗈𝗎𝗋 𝖭𝖺𝗆𝖾:* ${conn.getName(m.sender)}\n<❔> Want a costume name? type *${usedPrefix + command} yourname.age*`,
+  title: "▢- - - - - 𝗥 𝗘 𝗚 𝗜 𝗦 𝗧 𝗘 𝗥 - - - - -",
+  buttonText: "ᑕᒪIᑕK ᕼᗴᖇᗴ!",
+  sections
+}
+
+  let user = global.db.data.users[m.sender]
+  if (user.registered === true) throw `[❗] Kamu sudah terdaftar\nMau daftar ulang? *${usedPrefix}unreg <SERIAL NUMBER>*`
+  if (!Reg.test(text)) return conn.sendMessage(m.chat, listMessage, { quoted: m })
+  let [_, name, splitter, age] = text.match(Reg)
+  if (!name) throw 'Nama tidak boleh kosong (Alphanumeric)'
+  if (!age) throw 'Umur tidak boleh kosong (Angka)'
+  age = parseInt(age)
+  if (age > 30) throw 'Umur melewati batas maksimal!'
+  if (age < 9) throw 'Umur melewati batas minimal!'
+  user.name = name.trim()
+  user.age = age
+  user.regTime = + new Date
+  user.registered = true
+  let sn = createHash('md5').update(m.sender).digest('hex')
+  let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : m.fromMe ? conn.user.jid : m.sender
+  let cap = `
+┏─• *U s e r*
+│▸ *𝗦𝘁𝗮𝘁𝘂𝘀:* ☑️ 𝖲𝗎𝖼𝖼𝖾𝗌𝖿𝗎𝗅𝗅
+│▸ *𝗡𝗮𝗺𝘀:* ${name}
+│▸ *𝗔𝗴𝗲:* ${age} Y𝖾𝖺𝗋𝗌
+│▸ *𝗦𝗡:* ${sn}
+┗────···
+
+Data user tersimpan didalam database!, dijamin aman tanpa tershare!
+`
+  let buttonMessage= {
+'document':{'url':urlnya},
+'mimetype':global.ddocx,
+'fileName':'- - - - - 𝗥 𝗘 𝗚 𝗜 𝗦 𝗧 𝗘 𝗥 - - - - -',
+'fileLength':fsizedoc,
+'pageCount':fpagedoc,
+'contextInfo':{
+'forwardingScore':555,
+'isForwarded':true,
+'externalAdReply':{
+'mediaUrl':global.linkig,
+'mediaType':2,
+'previewType':'pdf',
+'title':global.titlebot,
+'body':global.titlebot,
+'thumbnail':await(await fetch('https://telegra.ph/file/739f1593a24e19fe68f0d.jpg')).buffer(),
+'sourceUrl':linkig}},
+'caption':cap,
+'footer':wm,
+'buttons':[
+{'buttonId':'.menu','buttonText':{'displayText':'ᴍᴇɴᴜ'},'type':1},
+{'buttonId':'.donasi','buttonText':{'displayText':'ᴅᴏɴᴀsɪ'},'type':1}
+],
+'headerType':6}
+    await conn.sendMessage(m.chat,buttonMessage, { quoted:m})
+}
+handler.help = ['daftar', 'register'].map(v => v + ' <nama>.<umur>')
+handler.tags = ['xp']
+
+handler.command = /^(daftar|verify|reg(ister)?)$/i
+handler.private = true
+
+module.exports = handler
